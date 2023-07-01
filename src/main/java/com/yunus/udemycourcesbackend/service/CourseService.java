@@ -6,6 +6,7 @@ import com.yunus.udemycourcesbackend.exception.CourseNotFoundException;
 import com.yunus.udemycourcesbackend.model.Course;
 import com.yunus.udemycourcesbackend.repository.CourseRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class CourseService {
         }
     }
 
+    @Transactional
     public Boolean deleteCourseByName(String name) {
         if (courseRepository.existsCourseByName(name)) {
             courseRepository.deleteCourseByName(name);
