@@ -59,16 +59,63 @@ class CourseServiceTest {
         coursesDto.add(convert(course2));
         when(courseDtoConverter.convert(course)).thenReturn(coursesDto.get(0));
         when(courseDtoConverter.convert(course2)).thenReturn(coursesDto.get(1));
-        when(courseRepository.findAll()).thenReturn(Arrays.asList(course,course2));
+        when(courseRepository.findAll()).thenReturn(Arrays.asList(course, course2));
 
         List<CourseDto> allCourses = courseService.getAllCourses();
 
-        assertEquals(allCourses,coursesDto);
+        assertEquals(allCourses, coursesDto);
     }
 
-    public CourseDto convert(Course course){
+    @Test
+    public void addCourse_shouldSaveCourse() {
+        String uuid = UUID.randomUUID().toString();
+        Course course = new Course(
+                uuid,
+                "MySQL",
+                "Jack",
+                3.2,
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Database-mysql.svg/1200px-Database-mysql.svg.png",
+                3.4);
+
+        when(courseRepository.save(course)).thenReturn(course);
+        when(courseDtoConverter.convert(course)).thenReturn(convert(course));
+        assertNotNull(courseService.addCourse(course));
+    }
+
+    @Test
+    public void getCourseByName_shouldReturnTheCourse() {
+        String uuid = UUID.randomUUID().toString();
+        Course course = new Course(
+                uuid,
+                "MySQL",
+                "Jack",
+                3.2,
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Database-mysql.svg/1200px-Database-mysql.svg.png",
+                3.4);
+        when(courseRepository.existsCourseByName(course.getName())).thenReturn(true);
+        when(courseRepository.findCourseByName(course.getName())).thenReturn(course);
+        when(courseDtoConverter.convert(course)).thenReturn(convert(course));
+
+        assertNotNull(courseService.getCourseByName(course.getName()));
+    }
+
+    @Test
+    public void deleteCourseByName_shouldDeleteTheCourse() {
+        String uuid = UUID.randomUUID().toString();
+        Course course = new Course(
+                uuid,
+                "MySQL",
+                "Jack",
+                3.2,
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Database-mysql.svg/1200px-Database-mysql.svg.png",
+                3.4);
+        when(courseRepository.existsCourseByName(course.getName())).thenReturn(true);
+
+        assertEquals(courseService.deleteCourseByName(course.getName()), true);
+
+    }
+
+    public CourseDto convert(Course course) {
         return new CourseDto(course.getName(), course.getOwnerName(), course.getPrice(), course.getImageUrl(), course.getRate());
     }
-
-
 }
