@@ -1,0 +1,14 @@
+services:
+  postgres:
+    container_name: "postgres-container"
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=udemy'
+      - 'POSTGRES_PASSWORD='
+      - 'POSTGRES_USER=postgres'
+    ports:
+      - '5432:5432'
+networks:
+  default:
+    external:
+      name: udemy
