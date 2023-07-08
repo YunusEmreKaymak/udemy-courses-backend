@@ -49,4 +49,13 @@ public class CourseService {
             throw new CourseNotFoundException("Course not found by name: " + name);
         }
     }
+
+    public List<CourseDto> getCoursesByCategory(String category) {
+        if(courseRepository.getAllByCategoryEquals(category).isEmpty()){
+            throw new CourseNotFoundException("Course not found by category: " + category);
+        } else {
+            return courseRepository.getAllByCategoryEquals(category)
+                    .stream().map(course -> courseDtoConverter.convert(course)).toList();
+        }
+    }
 }

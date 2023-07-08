@@ -18,18 +18,29 @@ public class Course {
     private String imageUrl;
     @Column
     private Double rate;
+    @Column
+    private String category;
 
 
-    public Course(String id, String name, String ownerName, Double price, String imageUrl, Double rate) {
+    public Course(String id, String name, String ownerName, Double price, String imageUrl, Double rate, String category) {
         this.id = id;
         this.name = name;
         this.ownerName = ownerName;
         this.price = price;
         this.imageUrl = imageUrl;
         this.rate = rate;
+        this.category = category;
     }
 
     public Course() {
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getId() {

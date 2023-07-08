@@ -1,7 +1,5 @@
 package com.yunus.udemycourcesbackend.dto;
 
-import jakarta.persistence.Column;
-
 public class CourseDto {
     private String name;
     private String ownerName;
@@ -9,13 +7,23 @@ public class CourseDto {
     private String imageUrl;
     private Double rate;
 
+    private String category;
 
-    public CourseDto(String name, String ownerName, Double price, String imageUrl, Double rate) {
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public CourseDto(String name, String ownerName, Double price, String imageUrl, Double rate, String category) {
         this.name = name;
         this.ownerName = ownerName;
         this.price = price;
         this.imageUrl = imageUrl;
         this.rate = rate;
+        this.category = category;
     }
 
     public String getName() {

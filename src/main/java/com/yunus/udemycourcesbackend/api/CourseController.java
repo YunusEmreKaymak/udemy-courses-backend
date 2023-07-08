@@ -37,4 +37,9 @@ public class CourseController {
     public Boolean deleteCourseByName(@PathVariable("name") String name) {
         return courseService.deleteCourseByName(name);
     }
+
+    @GetMapping("/category/{category}")
+    public List<CourseDto> getCoursesByCategory(@PathVariable("category") String category){
+        return courseService.getCoursesByCategory(category);
+    }
 }
