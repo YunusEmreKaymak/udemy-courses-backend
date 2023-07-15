@@ -31,7 +31,7 @@ class CourseServiceTest {
     private CourseService courseService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -45,14 +45,16 @@ class CourseServiceTest {
                 "Jack",
                 3.2,
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Database-mysql.svg/1200px-Database-mysql.svg.png",
-                3.4);
+                3.4,
+                "IT");
         Course course2 = new Course(
                 uuid2,
                 "React",
                 "Mike",
                 4.3,
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png",
-                4.7);
+                4.7,
+                "IT");
 
         List<CourseDto> coursesDto = new ArrayList<>();
         coursesDto.add(convert(course));
@@ -75,7 +77,9 @@ class CourseServiceTest {
                 "Jack",
                 3.2,
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Database-mysql.svg/1200px-Database-mysql.svg.png",
-                3.4);
+                3.4,
+                "IT"
+        );
 
         when(courseRepository.save(course)).thenReturn(course);
         when(courseDtoConverter.convert(course)).thenReturn(convert(course));
@@ -91,7 +95,8 @@ class CourseServiceTest {
                 "Jack",
                 3.2,
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Database-mysql.svg/1200px-Database-mysql.svg.png",
-                3.4);
+                3.4,
+                "IT");
         when(courseRepository.existsCourseByName(course.getName())).thenReturn(true);
         when(courseRepository.findCourseByName(course.getName())).thenReturn(course);
         when(courseDtoConverter.convert(course)).thenReturn(convert(course));
@@ -108,7 +113,7 @@ class CourseServiceTest {
                 "Jack",
                 3.2,
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Database-mysql.svg/1200px-Database-mysql.svg.png",
-                3.4);
+                3.4, "IT");
         when(courseRepository.existsCourseByName(course.getName())).thenReturn(true);
 
         assertEquals(courseService.deleteCourseByName(course.getName()), true);
@@ -116,6 +121,6 @@ class CourseServiceTest {
     }
 
     public CourseDto convert(Course course) {
-        return new CourseDto(course.getName(), course.getOwnerName(), course.getPrice(), course.getImageUrl(), course.getRate());
+        return new CourseDto(course.getName(), course.getOwnerName(), course.getPrice(), course.getImageUrl(), course.getRate(), course.getCategory());
     }
 }

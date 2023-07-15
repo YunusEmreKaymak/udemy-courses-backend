@@ -12,7 +12,7 @@ import java.util.List;
 @CrossOrigin("*")
 public class CourseController {
 
-    private CourseService courseService;
+    private final CourseService courseService;
 
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
@@ -24,12 +24,12 @@ public class CourseController {
     }
 
     @PostMapping()
-    public void addCourse(@RequestBody Course course){
+    public void addCourse(@RequestBody Course course) {
         courseService.addCourse(course);
     }
 
     @GetMapping("/{name}")
-    public CourseDto getCourseByName(@PathVariable("name") String name){
+    public CourseDto getCourseByName(@PathVariable("name") String name) {
         return courseService.getCourseByName(name);
     }
 
@@ -39,7 +39,12 @@ public class CourseController {
     }
 
     @GetMapping("/category/{category}")
-    public List<CourseDto> getCoursesByCategory(@PathVariable("category") String category){
+    public List<CourseDto> getCoursesByCategory(@PathVariable("category") String category) {
         return courseService.getCoursesByCategory(category);
+    }
+
+    @PutMapping
+    public void updateCourse(@RequestBody Course course) {
+        courseService.updateCourse(course);
     }
 }

@@ -12,8 +12,8 @@ import java.util.List;
 
 @Service
 public class CourseService {
-    private CourseRepository courseRepository;
-    private CourseDtoConverter courseDtoConverter;
+    private final CourseRepository courseRepository;
+    private final CourseDtoConverter courseDtoConverter;
 
     public CourseService(CourseRepository courseRepository, CourseDtoConverter courseDtoConverter) {
         this.courseRepository = courseRepository;
@@ -22,8 +22,7 @@ public class CourseService {
 
     public List<CourseDto> getAllCourses() {
         List<Course> allCourses = courseRepository.findAll();
-        List<CourseDto> allCoursesDto = allCourses.stream().map(course -> courseDtoConverter.convert(course)).toList();
-        return allCoursesDto;
+        return allCourses.stream().map(course -> courseDtoConverter.convert(course)).toList();
     }
 
     public CourseDto addCourse(Course course) {
@@ -33,8 +32,7 @@ public class CourseService {
     public CourseDto getCourseByName(String name) {
         if (courseRepository.existsCourseByName(name)) {
             Course courseByName = courseRepository.findCourseByName(name);
-            CourseDto courseDto = courseDtoConverter.convert(courseByName);
-            return courseDto;
+            return courseDtoConverter.convert(courseByName);
         } else {
             throw new CourseNotFoundException("Course not found by name: " + name);
         }
@@ -51,11 +49,37 @@ public class CourseService {
     }
 
     public List<CourseDto> getCoursesByCategory(String category) {
-        if(courseRepository.getAllByCategoryEquals(category).isEmpty()){
+        if (courseRepository.getAllByCategoryEquals(category).isEmpty()) {
             throw new CourseNotFoundException("Course not found by category: " + category);
         } else {
             return courseRepository.getAllByCategoryEquals(category)
                     .stream().map(course -> courseDtoConverter.convert(course)).toList();
+        }
+    }
+
+    public void updateCourse(Course course) {
+        System.out.println(course.getName());
+        if (courseRepository.existsCourseByName(course.getName())) {
+            Course courseByName = courseRepository.findCourseByName(course.getName());
+            if(course.getOwnerName() != null){
+                courseByName.setOwnerName(course.getOwnerName());
+            }
+            if(course.getPrice() != null){
+                courseByName.setPrice(course.getPrice());
+            }
+            if(course.getImageUrl() != null){
+                courseByName.setImageUrl(course.getImageUrl());
+            }
+            if(course.getRate() != null){
+                courseByName.setRate(course.getRate());
+            }
+            if(course.getCategory() != null){
+                courseByName.setCategory(course.getCategory());
+            }
+            System.out.println(courseByName);
+            courseRepository.save(courseByName);
+        } else {
+            throw new CourseNotFoundException("Course not found on update: " + course.getName());
         }
     }
 }
