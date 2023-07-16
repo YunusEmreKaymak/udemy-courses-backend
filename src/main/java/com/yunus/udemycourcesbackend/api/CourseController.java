@@ -29,7 +29,7 @@ public class CourseController {
     }
 
     @GetMapping("/{name}")
-    public CourseDto getCourseByName(@PathVariable("name") String name) {
+    public List<CourseDto> getCourseByName(@PathVariable("name") String name) {
         return courseService.getCourseByName(name);
     }
 

@@ -8,6 +8,7 @@ import com.yunus.udemycourcesbackend.repository.CourseRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,17 +23,19 @@ public class CourseService {
 
     public List<CourseDto> getAllCourses() {
         List<Course> allCourses = courseRepository.findAll();
-        return allCourses.stream().map(course -> courseDtoConverter.convert(course)).toList();
+        return allCourses.stream().map(courseDtoConverter::convert).toList();
     }
 
     public CourseDto addCourse(Course course) {
         return courseDtoConverter.convert(courseRepository.save(course));
     }
 
-    public CourseDto getCourseByName(String name) {
+    public List<CourseDto> getCourseByName(String name) {
         if (courseRepository.existsCourseByName(name)) {
             Course courseByName = courseRepository.findCourseByName(name);
-            return courseDtoConverter.convert(courseByName);
+            List<CourseDto> courseDtos = new ArrayList<>();
+            courseDtos.add(courseDtoConverter.convert(courseByName));
+            return courseDtos;
         } else {
             throw new CourseNotFoundException("Course not found by name: " + name);
         }
@@ -53,7 +56,7 @@ public class CourseService {
             throw new CourseNotFoundException("Course not found by category: " + category);
         } else {
             return courseRepository.getAllByCategoryEquals(category)
-                    .stream().map(course -> courseDtoConverter.convert(course)).toList();
+                    .stream().map(courseDtoConverter::convert).toList();
         }
     }
 
@@ -61,19 +64,19 @@ public class CourseService {
         System.out.println(course.getName());
         if (courseRepository.existsCourseByName(course.getName())) {
             Course courseByName = courseRepository.findCourseByName(course.getName());
-            if(course.getOwnerName() != null){
+            if (course.getOwnerName() != null) {
                 courseByName.setOwnerName(course.getOwnerName());
             }
-            if(course.getPrice() != null){
+            if (course.getPrice() != null) {
                 courseByName.setPrice(course.getPrice());
             }
-            if(course.getImageUrl() != null){
+            if (course.getImageUrl() != null) {
                 courseByName.setImageUrl(course.getImageUrl());
             }
-            if(course.getRate() != null){
+            if (course.getRate() != null) {
                 courseByName.setRate(course.getRate());
             }
-            if(course.getCategory() != null){
+            if (course.getCategory() != null) {
                 courseByName.setCategory(course.getCategory());
             }
             System.out.println(courseByName);
