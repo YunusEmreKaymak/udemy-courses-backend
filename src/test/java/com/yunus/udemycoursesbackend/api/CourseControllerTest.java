@@ -190,4 +190,46 @@ class CourseControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    void updateCourse_success() throws Exception {
+        String uuid = UUID.randomUUID().toString();
+        Course course = new Course(
+                uuid,
+                "MySQL",
+                "Jack",
+                3.2,
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Database-mysql.svg/1200px-Database-mysql.svg.png",
+                3.4,
+                "IT");
+
+        String requestBody = objectMapper.writeValueAsString(course);
+
+        mockMvc.perform(put("/course")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk());
+    }
+
+//    @Test
+//    void updateCourse_not_found() throws Exception {
+//        String uuid = UUID.randomUUID().toString();
+//        Course course = new Course(
+//                uuid,
+//                "MySQL",
+//                "Jack",
+//                3.2,
+//                "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Database-mysql.svg/1200px-Database-mysql.svg.png",
+//                3.4,
+//                "IT");
+//
+//        String requestBody = objectMapper.writeValueAsString(course);
+//
+//        Mockito.doThrow(CourseNotFoundException.class).when(courseService).updateCourse(course);
+//        mockMvc.perform(put("/course")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(requestBody))
+//                .andExpect(status().isNotFound());
+//    }
+
+
 }
