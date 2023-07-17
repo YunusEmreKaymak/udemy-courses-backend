@@ -1,10 +1,10 @@
-package com.yunus.udemycourcesbackend.service;
+package com.yunus.udemycoursesbackend.service;
 
-import com.yunus.udemycourcesbackend.dto.CourseDto;
-import com.yunus.udemycourcesbackend.dto.CourseDtoConverter;
-import com.yunus.udemycourcesbackend.exception.CourseNotFoundException;
-import com.yunus.udemycourcesbackend.model.Course;
-import com.yunus.udemycourcesbackend.repository.CourseRepository;
+import com.yunus.udemycoursesbackend.dto.CourseDto;
+import com.yunus.udemycoursesbackend.dto.CourseDtoConverter;
+import com.yunus.udemycoursesbackend.exception.CourseNotFoundException;
+import com.yunus.udemycoursesbackend.model.Course;
+import com.yunus.udemycoursesbackend.repository.CourseRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +30,7 @@ public class CourseService {
         return courseDtoConverter.convert(courseRepository.save(course));
     }
 
-    public List<CourseDto> getCourseByName(String name) {
+        public List<CourseDto> getCourseByName(String name) {
         if (courseRepository.existsCourseByName(name)) {
             Course courseByName = courseRepository.findCourseByName(name);
             List<CourseDto> courseDtos = new ArrayList<>();
@@ -61,7 +61,6 @@ public class CourseService {
     }
 
     public void updateCourse(Course course) {
-        System.out.println(course.getName());
         if (courseRepository.existsCourseByName(course.getName())) {
             Course courseByName = courseRepository.findCourseByName(course.getName());
             if (course.getOwnerName() != null) {

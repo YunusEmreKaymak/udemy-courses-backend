@@ -1,8 +1,8 @@
-package com.yunus.udemycourcesbackend.api;
+package com.yunus.udemycoursesbackend.api;
 
-import com.yunus.udemycourcesbackend.dto.CourseDto;
-import com.yunus.udemycourcesbackend.model.Course;
-import com.yunus.udemycourcesbackend.service.CourseService;
+import com.yunus.udemycoursesbackend.dto.CourseDto;
+import com.yunus.udemycoursesbackend.model.Course;
+import com.yunus.udemycoursesbackend.service.CourseService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

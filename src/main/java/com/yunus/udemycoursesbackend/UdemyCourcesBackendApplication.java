@@ -1,4 +1,4 @@
-package com.yunus.udemycourcesbackend;
+package com.yunus.udemycoursesbackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

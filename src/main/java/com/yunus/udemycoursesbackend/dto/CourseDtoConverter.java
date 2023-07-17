@@ -1,6 +1,6 @@
-package com.yunus.udemycourcesbackend.dto;
+package com.yunus.udemycoursesbackend.dto;
 
-import com.yunus.udemycourcesbackend.model.Course;
+import com.yunus.udemycoursesbackend.model.Course;
 import org.springframework.stereotype.Component;
 
 @Component
