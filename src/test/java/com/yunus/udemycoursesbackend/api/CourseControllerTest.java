@@ -17,10 +17,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -72,7 +72,7 @@ class CourseControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect((ResultMatcher) jsonPath("$[1].name").value("React"));
+                .andExpect(jsonPath("$[1].name").value("React"));
     }
 
     @Test
@@ -111,5 +111,32 @@ class CourseControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void getCourseByName_success() throws Exception {
+        CourseDto courseDto = new CourseDto(
+                "MySQL",
+                "Jack",
+                3.2,
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Database-mysql.svg/1200px-Database-mysql.svg.png",
+                3.4,
+                "IT");
+
+        ArrayList<CourseDto> courseDtoList = new ArrayList<>(List.of(courseDto));
+
+        Mockito.when(courseService.getCourseByName("MySQL")).thenReturn(courseDtoList);
+        mockMvc.perform(get("/course/MySQL")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].name").value("MySQL"));
+    }
+
+    @Test
+    void getCourseByName_not_found() throws Exception {
+        Mockito.when(courseService.getCourseByName("MySQL")).thenThrow(CourseNotFoundException.class);
+        mockMvc.perform(get("/course/MySQL")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
 
 }
