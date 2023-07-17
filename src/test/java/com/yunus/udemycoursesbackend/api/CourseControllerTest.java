@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yunus.udemycoursesbackend.dto.CourseDto;
 import com.yunus.udemycoursesbackend.exception.CourseNotFoundException;
 
+import com.yunus.udemycoursesbackend.model.Course;
 import com.yunus.udemycoursesbackend.service.CourseService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
 
 
 import static org.hamcrest.Matchers.hasSize;
@@ -87,6 +89,26 @@ class CourseControllerTest {
         mockMvc.perform(get("/course/MySQL")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void addCourse_success() throws Exception {
+        String uuid = UUID.randomUUID().toString();
+        Course course = new Course(
+                uuid,
+                "MySQL",
+                "Jack",
+                3.2,
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Database-mysql.svg/1200px-Database-mysql.svg.png",
+                3.4,
+                "IT");
+
+        String requestBody = objectMapper.writeValueAsString(course);
+
+        mockMvc.perform(post("/course")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk());
     }
 
 
