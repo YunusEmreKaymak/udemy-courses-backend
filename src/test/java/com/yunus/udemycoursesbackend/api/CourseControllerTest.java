@@ -155,4 +155,39 @@ class CourseControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    void getCoursesByCategory_success() throws Exception {
+        CourseDto courseDto = new CourseDto(
+                "MySQL",
+                "Jack",
+                3.2,
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Database-mysql.svg/1200px-Database-mysql.svg.png",
+                3.4,
+                "IT");
+        CourseDto courseDto2 = new CourseDto(
+                "React",
+                "Mike",
+                4.3,
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png",
+                4.7,
+                "IT");
+
+        ArrayList<CourseDto> courseDtoList = new ArrayList<>(Arrays.asList(courseDto, courseDto2));
+
+        Mockito.when(courseService.getCoursesByCategory("IT")).thenReturn(courseDtoList);
+        mockMvc.perform(get("/course/category/IT")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[1].name").value("React"));
+    }
+
+    @Test
+    void getCoursesByCategory_not_found() throws Exception {
+        Mockito.when(courseService.getCoursesByCategory("IT")).thenThrow(CourseNotFoundException.class);
+        mockMvc.perform(get("/course/category/IT")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
 }
