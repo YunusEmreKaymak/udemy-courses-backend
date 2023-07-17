@@ -139,4 +139,20 @@ class CourseControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    void deleteCourseByName_success() throws Exception {
+        Mockito.when(courseService.deleteCourseByName("MySQL")).thenReturn(true);
+        mockMvc.perform(delete("/course/MySQL")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void deleteCourseByName_not_found() throws Exception {
+        Mockito.when(courseService.deleteCourseByName("MySQL")).thenThrow(CourseNotFoundException.class);
+        mockMvc.perform(delete("/course/MySQL")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
 }
